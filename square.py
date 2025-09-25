@@ -12,9 +12,17 @@ def square(n):
     """
     return n*n
 
-def pythagoras_triplets(upper_limit_z):
+def pythagorean_triplets(upper_limit_z):
+    """
+    Compute pythagorean triplets.
+
+    Args:
+        upper_limit_z (int): upper limit for z value (as stopping criterion)
+
+    Returns:
+        list[tuple]: solution triplets (x,y,z) 
+    """
     results = []
-    stopping_criterion = False
     for x in range(1,upper_limit_z+1):
         
         for y in range(x, upper_limit_z+1):
@@ -33,7 +41,12 @@ def main():
     try:
         n = int(input("Enter number to square:"))
         print(f"Square of {n}: {square(n)}")
-        print(pythagoras_triplets(n))
+        
+        triplets = pythagorean_triplets(n)
+        print("Pythagorean triplets (x,y,z):")
+        for (x,y,z) in triplets:
+            print(f"({x},{y},{z}): {x**2} + {y**2} = {z**2}")
+        
 
     except ValueError:
         print("Please enter a valid number")
