@@ -1,5 +1,7 @@
 import math 
 import sys
+import time
+import numpy as np
 
 def square(n):
     """
@@ -45,7 +47,6 @@ def check_taxicab_number(tc_candidate):
         if min(base_3, base_4)<1:
             return False, None
         else:
-            print([(base_1, base_2), (base_3, base_4)])
             return True, [(base_1, base_2), (base_3, base_4)]
         
 def taxicab_numbers(num_tc_numbers):
@@ -90,19 +91,51 @@ def pythagorean_triplets(upper_limit_z):
         
     return results
 
+def pythagorean_triplets_lists(limit):
+    results = []
+    nums = list(range(1, limit+1))
+    squares = square_list(nums)
+    added_squares = add_list(squares, squares)
+    for key, value in added_squares.items():
+        if value in squares:
+            results.append((int(key[0]**(0.5)), int(key[1]**(0.5)), np.where(np.array(nums)**2==value)[0][0]+1))
+    return results
+
+
+def square_list(int_list):
+    return [x**2 for x in int_list]
+
+def add_list(list1, list2):
+    dictionary = {}
+    for x1 in list1:
+        for x2 in list2:
+            dictionary[(x1, x2)] = x1+x2
+    return dictionary
+
 
 def main():
     try:
         n = int(sys.argv[1])
         if n<1:
             raise ValueError
+        print()
         print(f"Square of {n}: {square(n)}")
-        
+        print("#"*10)
+        start_time = time.time()
         triplets = pythagorean_triplets(n)
+        end_time = time.time()
+        print(end_time-start_time)
+        start_time = time.time()
+        triplets = pythagorean_triplets_lists(n)
+        end_time = time.time()
+        print("alternative:", end_time-start_time)
+        print()
         print("Pythagorean triplets (x,y,z):")
         for (x,y,z) in triplets:
             print(f"({x},{y},{z}): {x**2} + {y**2} = {z**2}")
+        print("#"*10)
         
+        print()
         num_taxicab_numbers = int(sys.argv[2])
         results_tc = taxicab_numbers(num_taxicab_numbers)
         print(f"First {num_taxicab_numbers} taxicab numbers:")
